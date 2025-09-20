@@ -73,7 +73,7 @@ def project_card(p: Dict[str, str]) -> None:
 st.markdown(
     """
     <style>
-      .card {background: #ffffff; border: 1px solid rgba(0,0,0,0.07); padding: 1rem 1.25rem; border-radius: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.04);}
+      .card {background: #ffffff; border: 1px solid rgba(0,0,0,0.07); padding: 1rem 1.25rem; border-radius: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.04);} 
       .card + .card { margin-top: 0.75rem; }
       .card-title { font-weight: 700; font-size: 1.05rem; margin-bottom: 0.25rem; }
       .card-body { opacity: 0.9; }
@@ -142,10 +142,27 @@ PROJECTS: List[Dict[str, str]] = [
 # Sidebar
 # --------------------
 with st.sidebar:
-    st.write("## Navigation")
+    profile_path = ASSETS_DIR / "profile.png"
+    if profile_path.exists():
+        try:
+            import base64 as _base64
+
+            _b = profile_path.read_bytes()
+            _b64 = _base64.b64encode(_b).decode("utf-8")
+            st.markdown(
+                f"""
+                <div style='display:flex; justify-content:center; align-items:center; padding:8px 0;'>
+                  <img src='data:image/png;base64,{_b64}' alt='profile' style='width:123px;height:123px;object-fit:cover;border-radius:50%;border:1px solid rgba(0,0,0,0.08);'/>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+        except Exception:
+            pass
+
     section = st.radio("Go to", ["Home", "Resume", "Projects", "Contact"], index=0)
     st.write("\n")
-    st.write("## Links")
+    st.markdown("## Links")
     st.markdown(f"[LinkedIn]({PROFILE['linkedin']})")
     st.markdown(f"[GitHub]({PROFILE['github']})")
 
@@ -155,38 +172,7 @@ with st.sidebar:
 if section == "Home":
     left, right = st.columns([2, 1])
     with left:
-        profile_path = ASSETS_DIR / "profile.png"
         st.title(PROFILE["name"])
-        if profile_path.exists():
-            try:
-                import base64 as _base64
-
-                with profile_path.open("rb") as _pf:
-                    _b64 = _base64.b64encode(_pf.read()).decode("utf-8")
-                img_src = f"data:image/png;base64,{_b64}"
-                st.markdown(
-                    f"""
-                                            <div style='display:flex; align-items:center; gap:1rem;'>
-                                                    <img src='{img_src}' alt='Profile' class='profile-img' />
-                                            </div>
-                                            <style>
-                                                .profile-img {{
-                                                    width: 120px;
-                                                    height: 120px;
-                                                    object-fit: cover;
-                                                    border-radius: 999px;
-                                                    border: 2px solid rgba(255,255,255,0.06);
-                                                    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
-                                                    display: block;
-                                                }}
-                                                @media (max-width: 600px) {{ .profile-img {{ width: 84px !important; height:84px !important; }} }}
-                                            </style>
-                    """,
-                    unsafe_allow_html=True,
-                )
-            except Exception:
-                # fallback: don't show image if something goes wrong
-                pass
         st.subheader(PROFILE["role"])
         st.write(PROFILE["blurb"])
         st.write("### Highlights")
@@ -252,4 +238,4 @@ elif section == "Contact":
 # Footer
 # --------------------
 st.markdown("<hr>", unsafe_allow_html=True)
-st.caption("© " + str(datetime.datetime.now().year) + " Steven Rolka. Built with Streamlit.")
+st.caption("© " + str(datetime.datetime.now().year) + " Steven Rolka. Built with Python.")

@@ -1,6 +1,6 @@
 # Steven Rolka
 
-**Phone:** 989.332.8587
+**Phone:** 989.332.8587 |
 **Email:** rolka.steven@outlook.com
 
 ---
