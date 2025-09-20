@@ -1,5 +1,6 @@
 import base64
 import pathlib
+import datetime
 import urllib.parse
 from typing import List, Dict
 
@@ -155,21 +156,30 @@ if section == "Home":
     left, right = st.columns([2, 1])
     with left:
         st.title(PROFILE["name"])
-        # show circular profile image if available
+        # show circular profile image if available (embed as base64 for reliability)
         profile_path = ASSETS_DIR / "profile.png"
         if profile_path.exists():
-            st.markdown(
-                """
-                <div style='display:flex; align-items:center; gap:1rem;'>
-                    <img src='assets/profile.png' alt='Profile' class='profile-img' width='120' />
-                </div>
-                <style>
-                  .profile-img { border-radius: 999px; border: 2px solid rgba(255,255,255,0.06); box-shadow: 0 2px 8px rgba(0,0,0,0.5); }
-                  @media (max-width: 600px) { .profile-img { width: 84px !important; } }
-                </style>
-                """,
-                unsafe_allow_html=True,
-            )
+            try:
+                import base64 as _base64
+
+                with profile_path.open("rb") as _pf:
+                    _b64 = _base64.b64encode(_pf.read()).decode("utf-8")
+                img_src = f"data:image/png;base64,{_b64}"
+                st.markdown(
+                    f"""
+                    <div style='display:flex; align-items:center; gap:1rem;'>
+                        <img src='{img_src}' alt='Profile' class='profile-img' width='120' />
+                    </div>
+                    <style>
+                      .profile-img {{ border-radius: 999px; border: 2px solid rgba(255,255,255,0.06); box-shadow: 0 2px 8px rgba(0,0,0,0.5); }}
+                      @media (max-width: 600px) {{ .profile-img {{ width: 84px !important; }} }}
+                    </style>
+                    """,
+                    unsafe_allow_html=True,
+                )
+            except Exception:
+                # fallback: don't show image if something goes wrong
+                pass
         st.subheader(PROFILE["role"])
         st.write(PROFILE["blurb"])
         st.write("### Highlights")
@@ -235,4 +245,4 @@ elif section == "Contact":
 # Footer
 # --------------------
 st.markdown("<hr>", unsafe_allow_html=True)
-st.caption("© " + str(pathlib.datetime.datetime.now().year) + " Steven Rolka. Built with Streamlit.")
+st.caption("© " + str(datetime.datetime.now().year) + " Steven Rolka. Built with Streamlit.")
