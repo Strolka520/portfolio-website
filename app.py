@@ -155,9 +155,8 @@ with st.sidebar:
 if section == "Home":
     left, right = st.columns([2, 1])
     with left:
-        st.title(PROFILE["name"])
-        # show circular profile image if available (embed as base64 for reliability)
         profile_path = ASSETS_DIR / "profile.png"
+        st.title(PROFILE["name"])
         if profile_path.exists():
             try:
                 import base64 as _base64
@@ -167,13 +166,21 @@ if section == "Home":
                 img_src = f"data:image/png;base64,{_b64}"
                 st.markdown(
                     f"""
-                    <div style='display:flex; align-items:center; gap:1rem;'>
-                        <img src='{img_src}' alt='Profile' class='profile-img' width='120' />
-                    </div>
-                    <style>
-                      .profile-img {{ border-radius: 999px; border: 2px solid rgba(255,255,255,0.06); box-shadow: 0 2px 8px rgba(0,0,0,0.5); }}
-                      @media (max-width: 600px) {{ .profile-img {{ width: 84px !important; }} }}
-                    </style>
+                                            <div style='display:flex; align-items:center; gap:1rem;'>
+                                                    <img src='{img_src}' alt='Profile' class='profile-img' />
+                                            </div>
+                                            <style>
+                                                .profile-img {{
+                                                    width: 120px;
+                                                    height: 120px;
+                                                    object-fit: cover;
+                                                    border-radius: 999px;
+                                                    border: 2px solid rgba(255,255,255,0.06);
+                                                    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+                                                    display: block;
+                                                }}
+                                                @media (max-width: 600px) {{ .profile-img {{ width: 84px !important; height:84px !important; }} }}
+                                            </style>
                     """,
                     unsafe_allow_html=True,
                 )
