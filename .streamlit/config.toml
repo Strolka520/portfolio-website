@@ -1,0 +1,12 @@
+[theme]
+base = "dark"
+primaryColor = "#2ecc71"  # bright green
+backgroundColor = "#0b1220" # very dark blue-black
+secondaryBackgroundColor = "#0f1720" # slightly lighter
+textColor = "#d7f3e3" # pale mint
+font = "sans serif"
+
+[server]
+headless = true
+port = 8501
+enableCORS = false
