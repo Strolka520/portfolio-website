@@ -9,7 +9,7 @@ import streamlit as st
 # Basic Page Settings
 # --------------------
 st.set_page_config(
-    page_title="Your Name — Portfolio",
+    page_title="Steven Rolka — Portfolio",
     page_icon="📁",
     layout="wide",
 )
@@ -87,12 +87,12 @@ st.markdown(
 # Content
 # --------------------
 PROFILE = {
-    "name": "Your Name",
-    "role": "Senior BI Engineer / Data Platform Builder",
+    "name": "Steven Rolka",
+    "role": "Senior BI / Data Engineer",
     "location": "Midwest, USA",
-    "email": "you@example.com",
-    "linkedin": "https://www.linkedin.com/in/your-handle/",
-    "github": "https://github.com/your-handle",
+    "email": "rolka.steven@outlook.com",
+    "linkedin": "https://www.linkedin.com/in/steven-rolka",
+    "github": "https://github.com/Strolka520",
     "blurb": (
         "I design and build analytics platforms, dimensional models, and metadata-driven pipelines. "
         "This portfolio highlights selected projects and my experience in Microsoft Fabric, Spark, and Streamlit."
@@ -155,6 +155,21 @@ if section == "Home":
     left, right = st.columns([2, 1])
     with left:
         st.title(PROFILE["name"])
+        # show circular profile image if available
+        profile_path = ASSETS_DIR / "profile.png"
+        if profile_path.exists():
+            st.markdown(
+                """
+                <div style='display:flex; align-items:center; gap:1rem;'>
+                    <img src='assets/profile.png' alt='Profile' class='profile-img' width='120' />
+                </div>
+                <style>
+                  .profile-img { border-radius: 999px; border: 2px solid rgba(255,255,255,0.06); box-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+                  @media (max-width: 600px) { .profile-img { width: 84px !important; } }
+                </style>
+                """,
+                unsafe_allow_html=True,
+            )
         st.subheader(PROFILE["role"])
         st.write(PROFILE["blurb"])
         st.write("### Highlights")
@@ -220,4 +235,4 @@ elif section == "Contact":
 # Footer
 # --------------------
 st.markdown("<hr>", unsafe_allow_html=True)
-st.caption("© " + str(pathlib.datetime.datetime.now().year) + " Your Name. Built with Streamlit.")
+st.caption("© " + str(pathlib.datetime.datetime.now().year) + " Steven Rolka. Built with Streamlit.")
